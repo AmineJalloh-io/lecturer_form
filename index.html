@@ -1,347 +1,233 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lecturer Panel — MbAC</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-  <style>
-    * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',Roboto,system-ui,sans-serif; }
-    body { background: linear-gradient(145deg,#eef2f7,#d9e0eb); min-height:100vh; padding:20px; color:#1e2f4e; }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Lecturer Panel — MbAC</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Roboto,system-ui,sans-serif}
+body{background:linear-gradient(145deg,#eef2f7,#d9e0eb);min-height:100vh;padding:20px;color:#1e2f4e}
+.container{max-width:1100px;margin:0 auto}
 
-    .container { max-width: 1100px; margin: 0 auto; }
+.topbar{background:linear-gradient(120deg,#1e3a5f,#2b4b77);color:#fff;padding:16px 24px;border-radius:24px;display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:20px;flex-wrap:wrap;box-shadow:0 12px 28px -12px rgba(10,25,50,0.5)}
+.brand{display:flex;align-items:center;gap:14px}
+.logo{width:52px;height:52px;border-radius:16px;background:linear-gradient(135deg,#f5b942,#d98c00);display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-weight:900;font-size:16px;color:#1e2f4e}
+.brand-titles h1{font-size:18px;font-weight:700}
+.brand-titles .sub{font-size:11px;color:#b8cde3;letter-spacing:1.2px;text-transform:uppercase;margin-top:2px}
+.topbar-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.clock-widget{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.1);padding:8px 14px;border-radius:20px;font-size:12px;border:1px solid rgba(255,255,255,0.15)}
+.clock-widget i{color:#f5b942}
+.lang-switch{padding:8px 12px;background:rgba(255,255,255,0.14);border:1px solid rgba(255,255,255,0.2);border-radius:20px;color:#fff;font-size:12px;font-weight:600;cursor:pointer;outline:none}
+.lang-switch option{color:#1e2f4e;background:#fff}
 
-    .topbar {
-      background: linear-gradient(120deg,#1e3a5f,#2b4b77);
-      color:#fff; padding:18px 26px; border-radius:24px;
-      display:flex; align-items:center; justify-content:space-between;
-      gap:16px; margin-bottom:20px; flex-wrap:wrap;
-      box-shadow: 0 12px 28px -12px rgba(10,25,50,0.5);
-    }
-    .topbar .brand { display:flex; align-items:center; gap:14px; }
-    .logo {
-      width:52px; height:52px; border-radius:16px;
-      background:linear-gradient(135deg,#f5b942,#d98c00);
-      display:flex; align-items:center; justify-content:center;
-      font-family:Georgia,serif; font-weight:900; font-size:17px; color:#1e2f4e;
-    }
-    .topbar h1 { font-size:19px; font-weight:700; }
-    .topbar .sub { font-size:12px; color:#b8cde3; letter-spacing:1.2px; text-transform:uppercase; margin-top:2px; }
+.card{background:#fff;border-radius:24px;padding:26px 28px;box-shadow:0 12px 28px -16px rgba(30,50,80,0.25);border:1px solid #e7eff9;margin-bottom:20px}
+.card h2{font-size:21px;color:#1e2f4e;margin-bottom:8px;display:flex;align-items:center;gap:10px}
+.card h2 i{color:#3a6ea5}
+.card p.hint{color:#6e86a5;font-size:13.5px;margin-bottom:18px}
 
-    .card {
-      background:#fff; border-radius:24px; padding:28px 30px;
-      box-shadow: 0 12px 28px -16px rgba(30,50,80,0.25);
-      border:1px solid #e7eff9; margin-bottom:20px;
-    }
-    .card h2 { font-size:22px; color:#1e2f4e; margin-bottom:8px; display:flex; align-items:center; gap:10px; }
-    .card h2 i { color:#3a6ea5; }
-    .card p.hint { color:#6e86a5; font-size:14px; margin-bottom:20px; }
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form-field{display:flex;flex-direction:column;gap:5px}
+.form-field.full{grid-column:1 / -1}
+.form-field label{font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:#5e7392}
+.form-field input,.form-field select,.form-field textarea{padding:11px 15px;border:1.5px solid #d4e0f0;border-radius:13px;font-size:14px;background:#f9fcff;outline:none;color:#1e2f4e;transition:0.2s;font-family:inherit}
+.form-field textarea{resize:vertical;min-height:80px}
+.form-field input:focus,.form-field select:focus,.form-field textarea:focus{border-color:#3a6ea5;background:#fff;box-shadow:0 0 0 3px rgba(58,110,165,0.12)}
 
-    .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
-    .form-field { display:flex; flex-direction:column; gap:6px; }
-    .form-field.full { grid-column: 1 / -1; }
-    .form-field label {
-      font-size:12px; font-weight:700; text-transform:uppercase;
-      letter-spacing:0.5px; color:#5e7392;
-    }
-    .form-field input, .form-field select {
-      padding:12px 16px; border:1.5px solid #d4e0f0; border-radius:14px;
-      font-size:14.5px; background:#f9fcff; outline:none; color:#1e2f4e; transition:0.2s;
-    }
-    .form-field input:focus, .form-field select:focus {
-      border-color:#3a6ea5; background:#fff;
-      box-shadow: 0 0 0 3px rgba(58,110,165,0.12);
-    }
+.btn{padding:13px 26px;border:none;border-radius:30px;font-size:14.5px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:9px;transition:0.22s;background:#1e3a5f;color:#fff;box-shadow:0 10px 20px -10px #1e3a5f}
+.btn:hover{background:#2b4b77;transform:translateY(-2px)}
+.btn:disabled{opacity:0.6;cursor:not-allowed;transform:none}
+.btn.secondary{background:#eef4fc;color:#1e3a5f;border:1px solid #d4e2f2;box-shadow:none}
+.btn.secondary:hover{background:#dbe7f5}
+.btn.danger{background:#c0392b;box-shadow:0 10px 20px -10px #c0392b}
+.btn-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px}
+.hidden{display:none!important}
 
-    .btn {
-      padding:14px 28px; border:none; border-radius:30px;
-      font-size:15px; font-weight:600; cursor:pointer;
-      display:inline-flex; align-items:center; justify-content:center; gap:10px;
-      transition:0.22s; background:#1e3a5f; color:#fff;
-      box-shadow: 0 10px 20px -10px #1e3a5f;
-    }
-    .btn:hover { background:#2b4b77; transform:translateY(-2px); }
-    .btn:disabled { opacity:0.6; cursor:not-allowed; transform:none; }
-    .btn.secondary { background:#eef4fc; color:#1e3a5f; border:1px solid #d4e2f2; box-shadow:none; }
-    .btn.secondary:hover { background:#dbe7f5; }
-    .btn.danger { background:#c0392b; box-shadow:0 10px 20px -10px #c0392b; }
-    .btn.danger:hover { background:#a93226; }
-    .btn-row { display:flex; gap:12px; flex-wrap:wrap; margin-top:16px; }
+.modules-list{margin-top:14px;display:flex;flex-direction:column;gap:8px}
+.module-item{display:grid;grid-template-columns:1fr 1fr 1fr 1fr auto;gap:8px;align-items:center;padding:10px 12px;background:#f6faff;border-radius:12px;border:1px solid #e2ebf5;font-size:12px}
+.module-item input,.module-item select{padding:7px 9px;border:1px solid #d4e0f0;border-radius:9px;font-size:12px;background:#fff;outline:none;color:#1e2f4e}
+.module-remove{background:#ffe3e3;border:none;color:#c0392b;width:28px;height:28px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.module-remove:hover{background:#fbb}
 
-    .modules-list { margin-top:14px; display:flex; flex-direction:column; gap:8px; }
-    .module-item {
-      display:grid; grid-template-columns: 1fr 1fr 1fr 1fr auto; gap:10px; align-items:center;
-      padding:10px 14px; background:#f6faff; border-radius:14px; border:1px solid #e2ebf5;
-      font-size:13px;
-    }
-    .module-item input, .module-item select {
-      padding:8px 10px; border:1px solid #d4e0f0; border-radius:10px;
-      font-size:13px; background:#fff; outline:none; color:#1e2f4e;
-    }
-    .module-remove {
-      background:#ffe3e3; border:none; color:#c0392b; width:30px; height:30px;
-      border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center;
-    }
-    .module-remove:hover { background:#fbb; }
+.modal-backdrop{position:fixed;inset:0;background:rgba(10,25,45,0.55);display:flex;align-items:center;justify-content:center;z-index:9999;padding:20px;overflow-y:auto}
+.modal{background:#fff;border-radius:24px;padding:28px 26px;max-width:460px;width:100%;text-align:center;box-shadow:0 25px 60px -20px rgba(0,20,50,0.5);max-height:92vh;overflow-y:auto}
+.modal h3{font-size:19px;margin-bottom:10px;color:#1e2f4e}
+.modal p{font-size:14px;color:#5b6f8c;margin-bottom:20px;line-height:1.5}
+.modal .buttons{display:flex;gap:10px;justify-content:center}
 
-    .hidden { display:none !important; }
+.profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:6px}
+.profile-item{background:#f6faff;border:1px solid #e2ebf5;border-radius:14px;padding:11px 15px}
+.profile-item .lbl{font-size:10.5px;text-transform:uppercase;letter-spacing:0.6px;color:#6e86a5;font-weight:700;margin-bottom:2px}
+.profile-item .val{color:#1e2f4e;font-weight:600;font-size:14px;word-break:break-word}
 
-    /* modal */
-    .modal-backdrop {
-      position:fixed; inset:0; background:rgba(10,25,45,0.55);
-      display:flex; align-items:center; justify-content:center; z-index:9999;
-      padding:20px;
-    }
-    .modal {
-      background:#fff; border-radius:24px; padding:30px 28px;
-      max-width:440px; width:100%; text-align:center;
-      box-shadow:0 25px 60px -20px rgba(0,20,50,0.5);
-    }
-    .modal h3 { font-size:20px; margin-bottom:10px; color:#1e2f4e; }
-    .modal p { font-size:14.5px; color:#5b6f8c; margin-bottom:22px; line-height:1.5; }
-    .modal .buttons { display:flex; gap:12px; justify-content:center; }
-    .modal .buttons .btn { min-width:110px; }
-    .modal.welcome .welcome-emoji { font-size:44px; margin-bottom:10px; }
+.grades-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px}
+.grades-table th{background:#f6faff;padding:11px 12px;text-align:left;font-size:10.5px;text-transform:uppercase;letter-spacing:0.6px;color:#5e7392;font-weight:700;border-bottom:1px solid #e2ebf5}
+.grades-table td{padding:11px 12px;border-bottom:1px solid #f0f4fa;color:#33425e}
+.grades-table tr:last-child td{border-bottom:none}
 
-    /* dashboard cards */
-    .profile-grid {
-      display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:6px;
-    }
-    .profile-item {
-      background:#f6faff; border:1px solid #e2ebf5; border-radius:14px;
-      padding:12px 16px;
-    }
-    .profile-item .lbl {
-      font-size:11px; text-transform:uppercase; letter-spacing:0.6px;
-      color:#6e86a5; font-weight:700; margin-bottom:3px;
-    }
-    .profile-item .val { color:#1e2f4e; font-weight:600; font-size:15px; }
+.pill{display:inline-block;padding:3px 9px;border-radius:20px;font-size:10.5px;font-weight:700;text-transform:uppercase}
+.pill.green{background:#e0f7e9;color:#1e8449}
+.pill.orange{background:#fff1d8;color:#b26b00}
+.pill.red{background:#ffe3e3;color:#c0392b}
+.pill.blue{background:#e3efff;color:#2b7de9}
 
-    .grades-table { width:100%; border-collapse:collapse; font-size:13.5px; margin-top:10px; }
-    .grades-table th {
-      background:#f6faff; padding:12px 14px; text-align:left;
-      font-size:11px; text-transform:uppercase; letter-spacing:0.7px;
-      color:#5e7392; font-weight:700; border-bottom:1px solid #e2ebf5;
-    }
-    .grades-table td { padding:12px 14px; border-bottom:1px solid #f0f4fa; color:#33425e; }
-    .grades-table tr:last-child td { border-bottom:none; }
+.empty-state{text-align:center;padding:26px 18px;color:#9bb1cc;font-style:italic;font-size:13px}
 
-    .pill {
-      display:inline-block; padding:3px 10px; border-radius:20px;
-      font-size:11px; font-weight:700; text-transform:uppercase;
-    }
-    .pill.green  { background:#e0f7e9; color:#1e8449; }
-    .pill.blue   { background:#e3efff; color:#2b7de9; }
-    .pill.orange { background:#fff1d8; color:#b26b00; }
-    .pill.gray   { background:#eef2f7; color:#5b6f8c; }
-    .pill.red    { background:#ffe3e3; color:#c0392b; }
+/* Announcement cards */
+.announcements-panel{margin-bottom:20px}
+.announcement-card{background:#fff;border-radius:20px;padding:16px 20px;margin-bottom:12px;border-left:5px solid #3a6ea5;box-shadow:0 8px 18px -10px rgba(30,50,80,0.2)}
+.announcement-card.urgent{border-left-color:#c0392b;background:#fff7f7}
+.announcement-card.high{border-left-color:#e67e22;background:#fffaf5}
+.announcement-card.low{border-left-color:#8aa4c1}
+.announcement-card.request{border-left-color:#6c5ce7;background:#faf8ff}
+.announcement-card.notification{border-left-color:#0d9b8a;background:#f5fdfb}
+.announcement-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:6px;flex-wrap:wrap}
+.announcement-title{font-size:14.5px;font-weight:700;color:#1e2f4e}
+.announcement-tags{display:flex;gap:5px;flex-wrap:wrap}
+.announcement-tag{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.4px;padding:2px 8px;border-radius:10px;background:#eef2f7;color:#5b6f8c}
+.announcement-tag.urgent{background:#ffe3e3;color:#c0392b}
+.announcement-tag.high{background:#ffe9d1;color:#b26b00}
+.announcement-tag.normal{background:#e3efff;color:#2b7de9}
+.announcement-tag.announcement{background:#e3efff;color:#2b7de9}
+.announcement-tag.notification{background:#dcf5f0;color:#0d9b8a}
+.announcement-tag.request{background:#efe6ff;color:#6c5ce7}
+.announcement-tag.cat-academic{background:#e3efff;color:#2b7de9}
+.announcement-tag.cat-financial{background:#e0f7e9;color:#1e8449}
+.announcement-tag.cat-social{background:#fff1d8;color:#b26b00}
+.announcement-body{font-size:13px;color:#33425e;line-height:1.55;margin-bottom:6px}
+.announcement-closing{font-size:12.5px;font-style:italic;color:#5b6f8c;padding:6px 0;border-top:1px dashed #e4edf8;margin-top:6px}
+.announcement-meta{font-size:11.5px;color:#8aa4c1;display:flex;gap:10px;flex-wrap:wrap}
 
-    .empty-state { text-align:center; padding:30px 20px; color:#9bb1cc; font-style:italic; }
+.error-msg{color:#c0392b;font-size:13px;margin-top:12px;font-weight:500;text-align:center}
+.toast{position:fixed;bottom:24px;right:24px;background:#1e3a5f;color:#fff;padding:13px 20px;border-radius:14px;box-shadow:0 14px 30px -10px rgba(0,20,60,0.4);font-size:13.5px;opacity:0;transform:translateY(20px);transition:0.3s;pointer-events:none;z-index:99999;max-width:340px}
+.toast.show{opacity:1;transform:translateY(0)}
+.toast.error{background:#c0392b}
+.toast.success{background:#1e8449}
 
-    .toast {
-      position:fixed; bottom:24px; right:24px; background:#1e3a5f; color:#fff;
-      padding:14px 22px; border-radius:16px; box-shadow:0 14px 30px -10px rgba(0,20,60,0.4);
-      font-size:14.5px; opacity:0; transform:translateY(20px); transition:0.3s;
-      pointer-events:none; z-index:99999; max-width:340px;
-    }
-    .toast.show { opacity:1; transform:translateY(0); }
-    .toast.error { background:#c0392b; }
-    .toast.success { background:#1e8449; }
-
-    .error-msg {
-      color:#c0392b; font-size:13.5px; margin-top:12px; font-weight:500; text-align:center;
-    }
-
-    @media (max-width: 720px) {
-      .form-grid, .profile-grid { grid-template-columns:1fr; }
-      .module-item { grid-template-columns:1fr; }
-    }
-  </style>
+@media(max-width:720px){.form-grid,.profile-grid{grid-template-columns:1fr}.module-item{grid-template-columns:1fr}}
+</style>
 </head>
 <body>
-
 <div class="container">
   <div class="topbar">
     <div class="brand">
       <div class="logo">MbAC</div>
-      <div>
-        <h1>Lecturer Panel</h1>
-        <div class="sub">Malik bin Anas College of West Africa</div>
+      <div class="brand-titles">
+        <h1 data-i18n="header.panel">Lecturer Panel</h1>
+        <div class="sub" data-i18n="header.college">Malik bin Anas College of West Africa</div>
       </div>
     </div>
-    <div id="topbarActions"></div>
+    <div class="topbar-actions">
+      <div class="clock-widget"><i class="fas fa-calendar-day"></i><span class="clockDateTime">—</span></div>
+      <select class="lang-switch" id="langSwitch"><option value="en">EN</option><option value="ar">AR</option><option value="fr">FR</option></select>
+      <div id="topbarActions"></div>
+    </div>
   </div>
 
-  <!-- ==================== REGISTRATION ==================== -->
-  <div id="registerView" class="card">
-    <h2><i class="fas fa-user-plus"></i> Lecturer Registration</h2>
-    <p class="hint">Fill in your details and add the modules you teach, then confirm.</p>
+  <div id="announcementsWrap" class="hidden announcements-panel"></div>
 
+  <!-- REGISTER -->
+  <div id="registerView" class="card">
+    <h2><i class="fas fa-user-plus"></i> <span data-i18n="lec.register.title">Lecturer Registration</span></h2>
+    <p class="hint" data-i18n="lec.register.hint">Fill in your details and add the modules you teach.</p>
     <div class="form-grid">
+      <div class="form-field"><label data-i18n="form.name">Full Name</label><input type="text" id="regName" placeholder="Dr. John Mensah" /></div>
+      <div class="form-field"><label data-i18n="form.lecId">Lecturer ID</label><input type="text" id="regId" placeholder="LEC-2025-001" /></div>
       <div class="form-field">
-        <label>Full Name</label>
-        <input type="text" id="regName" placeholder="e.g. Dr. John Mensah" />
-      </div>
-      <div class="form-field">
-        <label>Lecturer ID Number</label>
-        <input type="text" id="regId" placeholder="e.g. LEC-2025-001" />
-      </div>
-      <div class="form-field">
-        <label>Department</label>
+        <label data-i18n="form.department">Department</label>
         <select id="regDept">
-          <option value="">— Select department —</option>
+          <option value="">—</option>
+          <option value="Islamic and Arabic">Islamic and Arabic</option>
           <option value="Computer Science">Computer Science</option>
-          <option value="Engineering">Engineering</option>
-          <option value="Business">Business</option>
-          <option value="Mathematics">Mathematics</option>
-          <option value="Physics">Physics</option>
-          <option value="Biology">Biology</option>
+          <option value="Human Resource Management">Human Resource Management</option>
+          <option value="Public Health">Public Health</option>
         </select>
       </div>
-      <div class="form-field">
-        <label>National ID Number</label>
-        <input type="text" id="regNid" placeholder="e.g. GHA-123456789-0" />
-      </div>
-      <div class="form-field">
-        <label>NIN Number</label>
-        <input type="text" id="regNin" placeholder="e.g. NIN-987654321" />
-      </div>
+      <div class="form-field"><label data-i18n="form.nationalId">National ID</label><input type="text" id="regNid" placeholder="GHA-XXXXXXXXX-X" /></div>
+      <div class="form-field"><label data-i18n="form.nin">NIN Number</label><input type="text" id="regNin" placeholder="NIN-XXXXXXXXX" /></div>
     </div>
 
-    <div style="margin-top:24px;">
-      <h3 style="font-size:15px; color:#1e2f4e; margin-bottom:6px;">
-        <i class="fas fa-book" style="color:#3a6ea5;"></i> Modules Taught
-      </h3>
-      <p style="font-size:13px; color:#6e86a5; margin-bottom:10px;">
-        Add one row per module. Each class lasts 50 minutes.
-      </p>
+    <div style="margin-top:20px;">
+      <h3 style="font-size:14px;color:#1e2f4e;margin-bottom:6px;"><i class="fas fa-book" style="color:#3a6ea5;"></i> <span data-i18n="lec.modules.title">Modules Taught</span></h3>
+      <p style="font-size:12.5px;color:#6e86a5;margin-bottom:8px;" data-i18n="lec.modules.hint">Each class lasts 50 minutes.</p>
       <div id="modulesList" class="modules-list"></div>
-      <button class="btn secondary" id="addModuleBtn" style="margin-top:12px;">
-        <i class="fas fa-plus"></i> Add Module
-      </button>
+      <button class="btn secondary" id="addModuleBtn" style="margin-top:10px;"><i class="fas fa-plus"></i> <span data-i18n="lec.modules.add">Add Module</span></button>
     </div>
 
-    <div class="btn-row">
-      <button class="btn" id="registerBtn">
-        <i class="fas fa-check-circle"></i> Register Lecturer
-      </button>
-    </div>
+    <div class="btn-row"><button class="btn" id="registerBtn"><i class="fas fa-check-circle"></i> <span data-i18n="lec.register.button">Register Lecturer</span></button></div>
     <div class="error-msg" id="regError"></div>
-    <div style="text-align:center; margin-top:16px;">
-      <span style="font-size:13.5px; color:#6e86a5;">Already registered?</span>
-      <a href="#" id="goToLogin" style="color:#2b7de9; font-weight:600; text-decoration:none;">Login here</a>
+    <div style="text-align:center;margin-top:14px;font-size:13px;color:#6e86a5;">
+      <span data-i18n="lec.register.alreadyReg">Already registered?</span> <a href="#" id="goToLogin" style="color:#2b7de9;font-weight:600;text-decoration:none;" data-i18n="lec.register.login">Login here</a>
     </div>
   </div>
 
-  <!-- ==================== LOGIN ==================== -->
+  <!-- LOGIN -->
   <div id="loginView" class="card hidden">
-    <h2><i class="fas fa-sign-in-alt"></i> Lecturer Login</h2>
-    <p class="hint">Enter your name and lecturer ID to log in.</p>
-
+    <h2><i class="fas fa-sign-in-alt"></i> <span data-i18n="lec.login.title">Lecturer Login</span></h2>
+    <p class="hint" data-i18n="lec.login.hint">Enter your name and lecturer ID to log in.</p>
     <div class="form-grid">
-      <div class="form-field">
-        <label>Full Name</label>
-        <input type="text" id="loginName" placeholder="e.g. Dr. John Mensah" autocomplete="off" />
-      </div>
-      <div class="form-field">
-        <label>Lecturer ID Number</label>
-        <input type="text" id="loginId" placeholder="e.g. LEC-2025-001" autocomplete="off" />
-      </div>
+      <div class="form-field"><label data-i18n="form.name">Full Name</label><input type="text" id="loginName" autocomplete="off" /></div>
+      <div class="form-field"><label data-i18n="form.lecId">Lecturer ID</label><input type="text" id="loginId" autocomplete="off" /></div>
     </div>
-
-    <div class="btn-row">
-      <button class="btn" id="loginBtn">
-        <i class="fas fa-arrow-right-to-bracket"></i> Login
-      </button>
-    </div>
+    <div class="btn-row"><button class="btn" id="loginBtn"><i class="fas fa-arrow-right-to-bracket"></i> <span data-i18n="btn.login">Login</span></button></div>
     <div class="error-msg" id="loginError"></div>
-    <div style="text-align:center; margin-top:16px;">
-      <span style="font-size:13.5px; color:#6e86a5;">New lecturer?</span>
-      <a href="#" id="goToRegister" style="color:#2b7de9; font-weight:600; text-decoration:none;">Register here</a>
+    <div style="text-align:center;margin-top:14px;font-size:13px;color:#6e86a5;">
+      <span data-i18n="lec.login.newLec">New lecturer?</span> <a href="#" id="goToRegister" style="color:#2b7de9;font-weight:600;text-decoration:none;" data-i18n="lec.login.register">Register here</a>
     </div>
   </div>
 
-  <!-- ==================== DASHBOARD ==================== -->
+  <!-- DASHBOARD -->
   <div id="dashboardView" class="hidden">
-
     <div class="card">
-      <h2><i class="fas fa-id-badge"></i> Welcome, <span id="dashName"></span></h2>
-      <p class="hint">Your registered credentials and modules.</p>
-
+      <h2><i class="fas fa-id-badge"></i> <span data-i18n="lec.dashboard.welcome">Welcome,</span> <span id="dashName"></span></h2>
+      <p class="hint" data-i18n="lec.dashboard.hint">Your registered credentials and modules.</p>
       <div class="profile-grid">
-        <div class="profile-item"><div class="lbl">Lecturer ID</div><div class="val" id="dashLecId"></div></div>
-        <div class="profile-item"><div class="lbl">Department</div><div class="val" id="dashDept"></div></div>
-        <div class="profile-item"><div class="lbl">National ID</div><div class="val" id="dashNid"></div></div>
-        <div class="profile-item"><div class="lbl">NIN</div><div class="val" id="dashNin"></div></div>
+        <div class="profile-item"><div class="lbl" data-i18n="form.lecId">Lecturer ID</div><div class="val" id="dashLecId"></div></div>
+        <div class="profile-item"><div class="lbl" data-i18n="form.department">Department</div><div class="val" id="dashDept"></div></div>
+        <div class="profile-item"><div class="lbl" data-i18n="form.nationalId">National ID</div><div class="val" id="dashNid"></div></div>
+        <div class="profile-item"><div class="lbl" data-i18n="form.nin">NIN</div><div class="val" id="dashNin"></div></div>
       </div>
-
-      <h3 style="font-size:15px; color:#1e2f4e; margin:22px 0 8px;">
-        <i class="fas fa-book" style="color:#3a6ea5;"></i> My Modules
-      </h3>
+      <h3 style="font-size:14px;color:#1e2f4e;margin:18px 0 8px;"><i class="fas fa-book" style="color:#3a6ea5;"></i> <span data-i18n="lec.modules.myTitle">My Modules</span></h3>
       <div id="myModulesList"></div>
     </div>
 
     <div class="card">
-      <h2><i class="fas fa-upload"></i> Publish a Grade</h2>
-      <p class="hint">Enter the student's ID, choose the module, and enter the score. Grades are visible to the student immediately.</p>
-
+      <h2><i class="fas fa-upload"></i> <span data-i18n="lec.grade.title">Publish a Grade</span></h2>
+      <p class="hint" data-i18n="lec.grade.hint">Enter the student's ID, choose the module, and enter the score.</p>
       <div class="form-grid">
-        <div class="form-field">
-          <label>Student ID</label>
-          <input type="text" id="gradeStudentId" placeholder="e.g. STU-2025-001" />
-        </div>
-        <div class="form-field">
-          <label>Module</label>
-          <select id="gradeModule"></select>
-        </div>
-        <div class="form-field">
-          <label>Score (0 – 100)</label>
-          <input type="number" id="gradeScore" min="0" max="100" step="0.01" placeholder="e.g. 87" />
-        </div>
-        <div class="form-field">
-          <label>Remarks (optional)</label>
-          <input type="text" id="gradeRemarks" placeholder="e.g. Excellent work" />
-        </div>
+        <div class="form-field"><label data-i18n="form.studentId">Student ID</label><input type="text" id="gradeStudentId" placeholder="STU-2025-001" /></div>
+        <div class="form-field"><label data-i18n="form.module">Module</label><select id="gradeModule"></select></div>
+        <div class="form-field"><label data-i18n="form.score">Score (0 – 100)</label><input type="number" id="gradeScore" min="0" max="100" step="0.01" placeholder="87" /></div>
+        <div class="form-field"><label data-i18n="form.remarks">Remarks (optional)</label><input type="text" id="gradeRemarks" placeholder="Excellent work" /></div>
       </div>
-      <div class="btn-row">
-        <button class="btn" id="publishBtn">
-          <i class="fas fa-paper-plane"></i> Publish Grade
-        </button>
-      </div>
+      <div class="btn-row"><button class="btn" id="publishBtn"><i class="fas fa-paper-plane"></i> <span data-i18n="lec.grade.publish">Publish Grade</span></button></div>
       <div class="error-msg" id="gradeError"></div>
     </div>
 
     <div class="card">
-      <h2><i class="fas fa-list-check"></i> Grades I've Published</h2>
-      <div id="publishedGradesWrap">
-        <div class="empty-state">Loading…</div>
-      </div>
+      <h2><i class="fas fa-list-check"></i> <span data-i18n="lec.published.title">Grades I've Published</span></h2>
+      <div id="publishedGradesWrap"><div class="empty-state">Loading…</div></div>
     </div>
-
   </div>
 </div>
 
-<!-- Confirm Modal -->
+<!-- Modals -->
 <div id="confirmModal" class="modal-backdrop hidden">
   <div class="modal">
-    <h3><i class="fas fa-circle-question" style="color:#3a6ea5;"></i> Confirm Registration</h3>
-    <p>Do you confirm that all details entered are correct?</p>
+    <h3><i class="fas fa-circle-question" style="color:#3a6ea5;"></i> <span data-i18n="modal.confirm.title">Confirm</span></h3>
+    <p data-i18n="modal.confirm.text">Do you confirm that all details entered are correct?</p>
     <div class="buttons">
-      <button class="btn" id="confirmYes"><i class="fas fa-check"></i> Yes</button>
-      <button class="btn danger" id="confirmNo"><i class="fas fa-xmark"></i> No</button>
+      <button class="btn" id="confirmYes" data-i18n="modal.yes">Yes</button>
+      <button class="btn danger" id="confirmNo" data-i18n="modal.no">No</button>
     </div>
   </div>
 </div>
-
-<!-- Welcome Modal -->
 <div id="welcomeModal" class="modal-backdrop hidden">
-  <div class="modal welcome">
-    <div class="welcome-emoji">🎉</div>
+  <div class="modal">
+    <div style="font-size:44px;margin-bottom:10px;">🎉</div>
     <h3>Welcome, <span id="welcomeName"></span>!</h3>
-    <p>Your registration is complete. Log in below with your name and lecturer ID to access your dashboard.</p>
-    <div class="buttons">
-      <button class="btn" id="welcomeContinue">Continue to Login</button>
-    </div>
+    <p data-i18n="modal.welcome.text">Your registration is complete. Log in below.</p>
+    <div class="buttons"><button class="btn" id="welcomeContinue" data-i18n="modal.welcome.continue">Continue to Login</button></div>
   </div>
 </div>
 
@@ -349,417 +235,285 @@
 
 <script type="module">
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
-
 const SUPABASE_URL = 'https://tvbuxljxkvflntjububs.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR2YnV4bGp4a3ZmbG50anVidWJzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTUwMzAzOTYsImV4cCI6MjExMDYwNjM5Nn0.74vBpNRFSWwyqIAMnakvA0NhSst2Qnzh4tIzFmvt65g';
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-const MODULES_BY_DEPT = {
-  'Computer Science': ['Data Structures', 'Algorithms', 'Web Development', 'Databases', 'Operating Systems', 'Networks'],
-  'Engineering': ['Statics', 'Dynamics', 'Thermodynamics', 'Circuits', 'Materials Science', 'Fluid Mechanics'],
-  'Business': ['Accounting', 'Marketing', 'Economics', 'Management', 'Finance', 'Business Law'],
-  'Mathematics': ['Calculus I', 'Calculus II', 'Linear Algebra', 'Statistics', 'Discrete Math', 'Differential Equations'],
-  'Physics': ['Mechanics', 'Electromagnetism', 'Optics', 'Quantum Physics', 'Thermodynamics', 'Astronomy'],
-  'Biology': ['Cell Biology', 'Genetics', 'Ecology', 'Anatomy', 'Microbiology', 'Evolution']
+// I18N
+const I18N = {
+  'header.panel': { en: 'Lecturer Panel', ar: 'لوحة المحاضرين', fr: 'Panneau des enseignants' },
+  'header.college': { en: 'Malik bin Anas College of West Africa', ar: 'كلية مالك بن أنس لغرب أفريقيا', fr: "Collège Malik bin Anas d'Afrique de l'Ouest" },
+  'form.name': { en: 'Full Name', ar: 'الاسم الكامل', fr: 'Nom complet' },
+  'form.lecId': { en: 'Lecturer ID', ar: 'رقم المحاضر', fr: "ID de l'enseignant" },
+  'form.department': { en: 'Department', ar: 'القسم', fr: 'Département' },
+  'form.nationalId': { en: 'National ID', ar: 'الهوية الوطنية', fr: "Carte d'identité" },
+  'form.nin': { en: 'NIN Number', ar: 'رقم NIN', fr: 'Numéro NIN' },
+  'form.studentId': { en: 'Student ID', ar: 'رقم الطالب', fr: "ID de l'étudiant" },
+  'form.module': { en: 'Module', ar: 'الوحدة', fr: 'Module' },
+  'form.score': { en: 'Score (0-100)', ar: 'الدرجة (0-100)', fr: 'Note (0-100)' },
+  'form.remarks': { en: 'Remarks (optional)', ar: 'ملاحظات (اختياري)', fr: 'Remarques (optionnel)' },
+  'btn.login': { en: 'Login', ar: 'تسجيل الدخول', fr: 'Se connecter' },
+  'btn.logout': { en: 'Logout', ar: 'تسجيل الخروج', fr: 'Déconnexion' },
+  'lec.register.title': { en: 'Lecturer Registration', ar: 'تسجيل المحاضرين', fr: 'Inscription des enseignants' },
+  'lec.register.hint': { en: 'Fill in your details and add the modules you teach.', ar: 'املأ بياناتك وأضف الوحدات التي تدرّسها.', fr: 'Remplissez vos coordonnées et ajoutez les modules que vous enseignez.' },
+  'lec.register.button': { en: 'Register Lecturer', ar: 'تسجيل محاضر', fr: 'Inscrire l\'enseignant' },
+  'lec.register.alreadyReg': { en: 'Already registered?', ar: 'مسجل بالفعل؟', fr: 'Déjà inscrit ?' },
+  'lec.register.login': { en: 'Login here', ar: 'سجل الدخول هنا', fr: 'Connectez-vous ici' },
+  'lec.login.title': { en: 'Lecturer Login', ar: 'تسجيل دخول المحاضر', fr: 'Connexion enseignant' },
+  'lec.login.hint': { en: 'Enter your name and lecturer ID to log in.', ar: 'أدخل اسمك ورقم المحاضر لتسجيل الدخول.', fr: 'Entrez votre nom et ID pour vous connecter.' },
+  'lec.login.newLec': { en: 'New lecturer?', ar: 'محاضر جديد؟', fr: 'Nouvel enseignant ?' },
+  'lec.login.register': { en: 'Register here', ar: 'سجل هنا', fr: 'Inscrivez-vous ici' },
+  'lec.modules.title': { en: 'Modules Taught', ar: 'الوحدات المُدرَّسة', fr: 'Modules enseignés' },
+  'lec.modules.hint': { en: 'Each class lasts 50 minutes.', ar: 'كل حصة تستمر 50 دقيقة.', fr: 'Chaque cours dure 50 minutes.' },
+  'lec.modules.add': { en: 'Add Module', ar: 'إضافة وحدة', fr: 'Ajouter un module' },
+  'lec.modules.myTitle': { en: 'My Modules', ar: 'وحداتي', fr: 'Mes modules' },
+  'lec.dashboard.welcome': { en: 'Welcome,', ar: 'مرحبا،', fr: 'Bienvenue,' },
+  'lec.dashboard.hint': { en: 'Your registered credentials and modules.', ar: 'بياناتك ووحداتك المسجلة.', fr: 'Vos identifiants et modules enregistrés.' },
+  'lec.grade.title': { en: 'Publish a Grade', ar: 'نشر درجة', fr: 'Publier une note' },
+  'lec.grade.hint': { en: "Enter the student's ID, choose the module, and enter the score.", ar: 'أدخل رقم الطالب، اختر الوحدة، وأدخل الدرجة.', fr: "Entrez l'ID de l'étudiant, choisissez le module et la note." },
+  'lec.grade.publish': { en: 'Publish Grade', ar: 'نشر الدرجة', fr: 'Publier la note' },
+  'lec.published.title': { en: "Grades I've Published", ar: 'الدرجات التي نشرتها', fr: 'Notes publiées' },
+  'modal.confirm.title': { en: 'Confirm', ar: 'تأكيد', fr: 'Confirmer' },
+  'modal.confirm.text': { en: 'Do you confirm that all details entered are correct?', ar: 'هل تؤكد أن جميع التفاصيل صحيحة؟', fr: 'Confirmez-vous que tous les détails sont corrects ?' },
+  'modal.yes': { en: 'Yes', ar: 'نعم', fr: 'Oui' },
+  'modal.no': { en: 'No', ar: 'لا', fr: 'Non' },
+  'modal.welcome.text': { en: 'Your registration is complete. Log in below.', ar: 'اكتمل تسجيلك. سجل الدخول أدناه.', fr: 'Votre inscription est terminée.' },
+  'modal.welcome.continue': { en: 'Continue to Login', ar: 'المتابعة لتسجيل الدخول', fr: 'Continuer vers la connexion' }
 };
+let currentLang = 'en';
+function t(key){ const e = I18N[key]; if (!e) return key; return e[currentLang] || e.en || key; }
+function applyI18n(){
+  document.querySelectorAll('[data-i18n]').forEach(el => el.textContent = t(el.dataset.i18n));
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => el.placeholder = t(el.dataset.i18nPlaceholder));
+  document.documentElement.lang = currentLang;
+  document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+}
+function tickClock(){
+  const loc = currentLang === 'ar' ? 'ar-EG' : currentLang === 'fr' ? 'fr-FR' : 'en-US';
+  const s = new Date().toLocaleString(loc,{weekday:'short',year:'numeric',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  document.querySelectorAll('.clockDateTime').forEach(el => el.textContent = s);
+}
+document.getElementById('langSwitch').addEventListener('change', e => {
+  currentLang = e.target.value; applyI18n(); tickClock();
+  if (currentLecturer) loadLecturerAnnouncements();
+});
 
+// MODULES
+const MODULES_BY_DEPT = {
+  'Islamic and Arabic': ['Quranic Studies','Hadith','Fiqh','Arabic Grammar','Arabic Literature','Islamic History','Tafsir'],
+  'Computer Science': ['Data Structures','Algorithms','Web Development','Databases','Operating Systems','Networks'],
+  'Human Resource Management': ['HR Management','Organizational Behavior','Recruitment & Selection','Training & Development','Compensation & Benefits','Industrial Relations'],
+  'Public Health': ['Epidemiology','Health Policy','Biostatistics','Environmental Health','Health Promotion','Global Health']
+};
 const DAYS = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-const PERIODS = [
-  '08:00','09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00'
-];
+const PERIODS = ['08:00','09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00'];
 
-// ============================================================
 // DOM
-// ============================================================
-const registerView  = document.getElementById('registerView');
-const loginView     = document.getElementById('loginView');
+const registerView = document.getElementById('registerView');
+const loginView = document.getElementById('loginView');
 const dashboardView = document.getElementById('dashboardView');
 const topbarActions = document.getElementById('topbarActions');
-
+const announcementsWrap = document.getElementById('announcementsWrap');
 const regName = document.getElementById('regName');
-const regId   = document.getElementById('regId');
+const regId = document.getElementById('regId');
 const regDept = document.getElementById('regDept');
-const regNid  = document.getElementById('regNid');
-const regNin  = document.getElementById('regNin');
+const regNid = document.getElementById('regNid');
+const regNin = document.getElementById('regNin');
 const regError = document.getElementById('regError');
+const registerBtn = document.getElementById('registerBtn');
 const modulesList = document.getElementById('modulesList');
 const addModuleBtn = document.getElementById('addModuleBtn');
-const registerBtn  = document.getElementById('registerBtn');
-
 const loginName = document.getElementById('loginName');
-const loginId   = document.getElementById('loginId');
-const loginBtn  = document.getElementById('loginBtn');
+const loginId = document.getElementById('loginId');
+const loginBtn = document.getElementById('loginBtn');
 const loginError = document.getElementById('loginError');
 const goToLogin = document.getElementById('goToLogin');
 const goToRegister = document.getElementById('goToRegister');
-
 const dashName = document.getElementById('dashName');
 const dashLecId = document.getElementById('dashLecId');
-const dashDept  = document.getElementById('dashDept');
-const dashNid   = document.getElementById('dashNid');
-const dashNin   = document.getElementById('dashNin');
+const dashDept = document.getElementById('dashDept');
+const dashNid = document.getElementById('dashNid');
+const dashNin = document.getElementById('dashNin');
 const myModulesList = document.getElementById('myModulesList');
-
 const gradeStudentId = document.getElementById('gradeStudentId');
-const gradeModule    = document.getElementById('gradeModule');
-const gradeScore     = document.getElementById('gradeScore');
-const gradeRemarks   = document.getElementById('gradeRemarks');
-const publishBtn     = document.getElementById('publishBtn');
-const gradeError     = document.getElementById('gradeError');
+const gradeModule = document.getElementById('gradeModule');
+const gradeScore = document.getElementById('gradeScore');
+const gradeRemarks = document.getElementById('gradeRemarks');
+const publishBtn = document.getElementById('publishBtn');
+const gradeError = document.getElementById('gradeError');
 const publishedGradesWrap = document.getElementById('publishedGradesWrap');
-
 const confirmModal = document.getElementById('confirmModal');
-const confirmYes   = document.getElementById('confirmYes');
-const confirmNo    = document.getElementById('confirmNo');
+const confirmYes = document.getElementById('confirmYes');
+const confirmNo = document.getElementById('confirmNo');
 const welcomeModal = document.getElementById('welcomeModal');
-const welcomeName  = document.getElementById('welcomeName');
+const welcomeName = document.getElementById('welcomeName');
 const welcomeContinue = document.getElementById('welcomeContinue');
-
 const toast = document.getElementById('toast');
 
-// ============================================================
-// STATE
-// ============================================================
 let currentLecturer = null;
 let pendingRegistration = null;
 
-// ============================================================
-// HELPERS
-// ============================================================
-function showToast(msg, type='info') {
-  toast.textContent = msg;
-  toast.className = 'toast show ' + (type === 'error' ? 'error' : type === 'success' ? 'success' : '');
-  clearTimeout(showToast._t);
-  showToast._t = setTimeout(() => toast.className = 'toast', 3500);
-}
+function showToast(msg, type='info'){ toast.textContent = msg; toast.className = 'toast show ' + (type === 'error' ? 'error' : type === 'success' ? 'success' : ''); clearTimeout(showToast._t); showToast._t = setTimeout(() => toast.className = 'toast', 3500); }
+function esc(s){ if (s == null) return ''; return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
-function esc(s) {
-  if (s == null) return '';
-  return String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
-}
-
-function switchView(view) {
-  registerView.classList.add('hidden');
-  loginView.classList.add('hidden');
-  dashboardView.classList.add('hidden');
-  topbarActions.innerHTML = '';
-
-  if (view === 'register') {
-    registerView.classList.remove('hidden');
-  } else if (view === 'login') {
-    loginView.classList.remove('hidden');
-  } else if (view === 'dashboard') {
-    dashboardView.classList.remove('hidden');
+function switchView(view){
+  registerView.classList.add('hidden'); loginView.classList.add('hidden'); dashboardView.classList.add('hidden');
+  announcementsWrap.classList.add('hidden'); topbarActions.innerHTML = '';
+  if (view === 'register') registerView.classList.remove('hidden');
+  else if (view === 'login') loginView.classList.remove('hidden');
+  else if (view === 'dashboard') {
+    dashboardView.classList.remove('hidden'); announcementsWrap.classList.remove('hidden');
     const btn = document.createElement('button');
     btn.className = 'btn secondary';
-    btn.innerHTML = '<i class="fas fa-sign-out-alt"></i> Logout';
+    btn.innerHTML = '<i class="fas fa-sign-out-alt"></i> <span data-i18n="btn.logout">Logout</span>';
     btn.onclick = logout;
     topbarActions.appendChild(btn);
+    applyI18n();
+    loadLecturerAnnouncements();
   }
 }
 
-// ============================================================
-// MODULE ROWS
-// ============================================================
-function addModuleRow() {
+function addModuleRow(){
   const dept = regDept.value;
-  const moduleOptions = (MODULES_BY_DEPT[dept] || []).map(m => `<option value="${esc(m)}">${esc(m)}</option>`).join('');
-  const dayOptions = DAYS.map(d => `<option value="${d}">${d}</option>`).join('');
-  const periodOptions = PERIODS.map(p => {
-    const [h, m] = p.split(':');
-    const endH = String(parseInt(h) + 0).padStart(2,'0'); // 50 minutes -> still same hour start
-    return `<option value="${p}">${p} – ${endH}:50</option>`;
-  }).join('');
-
+  const modOpts = (MODULES_BY_DEPT[dept] || []).map(m => `<option value="${esc(m)}">${esc(m)}</option>`).join('');
+  const dayOpts = DAYS.map(d => `<option value="${d}">${d}</option>`).join('');
+  const perOpts = PERIODS.map(p => `<option value="${p}">${p} – ${p.split(':')[0]}:50</option>`).join('');
   const row = document.createElement('div');
   row.className = 'module-item';
-  row.innerHTML = `
-    <select class="m-module">${moduleOptions || '<option value="">No modules for dept</option>'}</select>
-    <select class="m-day">${dayOptions}</select>
-    <select class="m-start">${periodOptions}</select>
-    <span style="font-size:12px;color:#6e86a5;text-align:center;">50 min</span>
-    <button type="button" class="module-remove"><i class="fas fa-times"></i></button>
-  `;
+  row.innerHTML = `<select class="m-module">${modOpts || '<option value="">Select dept first</option>'}</select><select class="m-day">${dayOpts}</select><select class="m-start">${perOpts}</select><span style="font-size:11px;color:#6e86a5;text-align:center;">50 min</span><button type="button" class="module-remove"><i class="fas fa-times"></i></button>`;
   row.querySelector('.module-remove').addEventListener('click', () => row.remove());
   modulesList.appendChild(row);
 }
-
-regDept.addEventListener('change', () => {
-  modulesList.innerHTML = '';
-  if (regDept.value) addModuleRow();
-});
-
+regDept.addEventListener('change', () => { modulesList.innerHTML = ''; if (regDept.value) addModuleRow(); });
 addModuleBtn.addEventListener('click', addModuleRow);
 
-// ============================================================
-// REGISTER
-// ============================================================
 registerBtn.addEventListener('click', () => {
   regError.textContent = '';
-  const name = regName.value.trim();
-  const id   = regId.value.trim();
-  const dept = regDept.value;
-  const nid  = regNid.value.trim();
-  const nin  = regNin.value.trim();
-
-  if (!name || !id || !dept || !nid || !nin) {
-    regError.textContent = 'Please fill in all fields.';
-    return;
-  }
-
-  const moduleRows = modulesList.querySelectorAll('.module-item');
+  const name = regName.value.trim(), id = regId.value.trim(), dept = regDept.value, nid = regNid.value.trim(), nin = regNin.value.trim();
+  if (!name || !id || !dept || !nid || !nin) { regError.textContent = 'Please fill in all fields.'; return; }
+  const rows = modulesList.querySelectorAll('.module-item');
   const modules = [];
-  moduleRows.forEach(r => {
-    const moduleName = r.querySelector('.m-module').value;
-    const day = r.querySelector('.m-day').value;
-    const start = r.querySelector('.m-start').value;
-    if (moduleName) {
-      const [h, m] = start.split(':');
-      const end = String(parseInt(h)).padStart(2,'0') + ':50';
-      modules.push({
-        module_name: moduleName,
-        day_of_week: day,
-        period_start: start,
-        period_end: end,
-        department: dept
-      });
-    }
+  rows.forEach(r => {
+    const mn = r.querySelector('.m-module').value, d = r.querySelector('.m-day').value, s = r.querySelector('.m-start').value;
+    if (mn) modules.push({ module_name: mn, day_of_week: d, period_start: s, period_end: s.split(':')[0] + ':50', department: dept });
   });
-
-  if (modules.length === 0) {
-    regError.textContent = 'Please add at least one module.';
-    return;
-  }
-
-  pendingRegistration = {
-    p_full_name: name,
-    p_lecturer_id: id,
-    p_department: dept,
-    p_national_id: nid,
-    p_nin: nin,
-    p_modules: modules
-  };
-
+  if (!modules.length) { regError.textContent = 'Add at least one module.'; return; }
+  pendingRegistration = { p_full_name: name, p_lecturer_id: id, p_department: dept, p_national_id: nid, p_nin: nin, p_modules: modules };
   confirmModal.classList.remove('hidden');
 });
-
-confirmNo.addEventListener('click', () => {
-  confirmModal.classList.add('hidden');
-  pendingRegistration = null;
-});
-
+confirmNo.addEventListener('click', () => { confirmModal.classList.add('hidden'); pendingRegistration = null; });
 confirmYes.addEventListener('click', async () => {
   confirmModal.classList.add('hidden');
   if (!pendingRegistration) return;
-
   registerBtn.disabled = true;
   registerBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Registering…';
-
   try {
     const { data, error } = await supabase.rpc('register_lecturer', pendingRegistration);
     if (error) throw error;
-
-    const result = data[0];
-    if (!result.success) {
-      regError.textContent = result.message;
-      registerBtn.disabled = false;
-      registerBtn.innerHTML = '<i class="fas fa-check-circle"></i> Register Lecturer';
-      return;
-    }
-
+    const r = data[0];
+    if (!r.success) { regError.textContent = r.message; return; }
     welcomeName.textContent = pendingRegistration.p_full_name;
     welcomeModal.classList.remove('hidden');
-  } catch (err) {
-    console.error(err);
-    regError.textContent = err.message || 'Registration failed.';
-  } finally {
+  } catch (err) { regError.textContent = err.message || 'Registration failed.'; }
+  finally {
     registerBtn.disabled = false;
-    registerBtn.innerHTML = '<i class="fas fa-check-circle"></i> Register Lecturer';
+    registerBtn.innerHTML = '<i class="fas fa-check-circle"></i> <span data-i18n="lec.register.button">Register Lecturer</span>';
+    applyI18n();
   }
 });
-
 welcomeContinue.addEventListener('click', () => {
   welcomeModal.classList.add('hidden');
   loginName.value = pendingRegistration.p_full_name;
-  loginId.value   = pendingRegistration.p_lecturer_id;
+  loginId.value = pendingRegistration.p_lecturer_id;
   pendingRegistration = null;
   switchView('login');
 });
 
-// ============================================================
-// LOGIN
-// ============================================================
 loginBtn.addEventListener('click', async () => {
   loginError.textContent = '';
-  const name = loginName.value.trim();
-  const id   = loginId.value.trim();
-
+  const name = loginName.value.trim(), id = loginId.value.trim();
   if (!name || !id) { loginError.textContent = 'Please enter both fields.'; return; }
-
   loginBtn.disabled = true;
   loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in…';
-
   try {
-    const { data, error } = await supabase.rpc('login_lecturer', {
-      p_full_name: name,
-      p_lecturer_id: id
-    });
+    const { data, error } = await supabase.rpc('login_lecturer',{p_full_name:name,p_lecturer_id:id});
     if (error) throw error;
-
-    if (!data || data.length === 0) {
-      loginError.textContent = 'No lecturer found with that name and ID.';
-      return;
-    }
-
+    if (!data || !data.length) { loginError.textContent = 'No lecturer found.'; return; }
     currentLecturer = data[0];
+    try { await supabase.rpc('log_lecturer_login',{p_lecturer_id:currentLecturer.lecturer_id,p_user_agent:navigator.userAgent.substring(0,200)}); } catch(e){}
     showDashboard();
-  } catch (err) {
-    console.error(err);
-    loginError.textContent = err.message || 'Login failed.';
-  } finally {
-    loginBtn.disabled = false;
-    loginBtn.innerHTML = '<i class="fas fa-arrow-right-to-bracket"></i> Login';
-  }
+  } catch (err) { loginError.textContent = err.message || 'Login failed.'; }
+  finally { loginBtn.disabled = false; loginBtn.innerHTML = '<i class="fas fa-arrow-right-to-bracket"></i> <span data-i18n="btn.login">Login</span>'; applyI18n(); }
 });
 
-function showDashboard() {
-  dashName.textContent  = currentLecturer.full_name;
+function showDashboard(){
+  dashName.textContent = currentLecturer.full_name;
   dashLecId.textContent = currentLecturer.lecturer_id;
-  dashDept.textContent  = currentLecturer.department;
-  dashNid.textContent   = currentLecturer.national_id;
-  dashNin.textContent   = currentLecturer.nin;
-
-  // modules
-  const modules = currentLecturer.modules || [];
-  if (modules.length === 0) {
-    myModulesList.innerHTML = '<div class="empty-state">No modules registered.</div>';
-  } else {
-    myModulesList.innerHTML = modules.map(m => `
-      <div class="profile-item" style="margin-bottom:8px;">
-        <div class="lbl">${esc(m.day_of_week)} · ${esc(m.period_start)} – ${esc(m.period_end)}</div>
-        <div class="val">${esc(m.module_name)}</div>
-      </div>
-    `).join('');
-  }
-
-  // populate grade module dropdown
-  gradeModule.innerHTML = modules.map(m =>
-    `<option value="${esc(m.module_name)}">${esc(m.module_name)}</option>`
-  ).join('') || '<option value="">No modules</option>';
-
+  dashDept.textContent = currentLecturer.department;
+  dashNid.textContent = currentLecturer.national_id;
+  dashNin.textContent = currentLecturer.nin;
+  const mods = currentLecturer.modules || [];
+  myModulesList.innerHTML = mods.length ? mods.map(m => `<div class="profile-item" style="margin-bottom:7px;"><div class="lbl">${esc(m.day_of_week)} · ${esc(m.period_start)} – ${esc(m.period_end)}</div><div class="val">${esc(m.module_name)}</div></div>`).join('') : '<div class="empty-state">No modules.</div>';
+  gradeModule.innerHTML = mods.map(m => `<option value="${esc(m.module_name)}">${esc(m.module_name)}</option>`).join('') || '<option value="">No modules</option>';
   switchView('dashboard');
   loadPublishedGrades();
 }
-
-async function loadPublishedGrades() {
+async function loadPublishedGrades(){
   if (!currentLecturer) return;
   publishedGradesWrap.innerHTML = '<div class="empty-state">Loading…</div>';
   try {
-    const { data, error } = await supabase.rpc('get_lecturer_grades', {
-      p_lecturer_id: currentLecturer.lecturer_id
-    });
+    const { data, error } = await supabase.rpc('get_lecturer_grades',{p_lecturer_id:currentLecturer.lecturer_id});
     if (error) throw error;
-
-    if (!data || data.length === 0) {
-      publishedGradesWrap.innerHTML = '<div class="empty-state">You haven\'t published any grades yet.</div>';
-      return;
-    }
-
-    publishedGradesWrap.innerHTML = `
-      <table class="grades-table">
-        <thead><tr>
-          <th>Student</th><th>ID</th><th>Module</th><th>Score</th><th>Grade</th><th>Remarks</th><th>Published</th>
-        </tr></thead>
-        <tbody>
-          ${data.map(g => `
-            <tr>
-              <td><strong>${esc(g.student_name)}</strong></td>
-              <td>${esc(g.student_id)}</td>
-              <td>${esc(g.module_name)}</td>
-              <td>${g.score}</td>
-              <td><span class="pill ${g.score >= 70 ? 'green' : g.score >= 50 ? 'orange' : 'red'}">${esc(g.letter_grade)}</span></td>
-              <td>${esc(g.remarks || '—')}</td>
-              <td>${g.published_at ? new Date(g.published_at).toLocaleDateString() : '—'}</td>
-            </tr>
-          `).join('')}
-        </tbody>
-      </table>
-    `;
-  } catch (err) {
-    console.error(err);
-    publishedGradesWrap.innerHTML = '<div class="empty-state">Failed to load grades.</div>';
-  }
+    if (!data || !data.length) { publishedGradesWrap.innerHTML = '<div class="empty-state">No grades yet.</div>'; return; }
+    publishedGradesWrap.innerHTML = `<table class="grades-table"><thead><tr><th>Student</th><th>ID</th><th>Module</th><th>Score</th><th>Grade</th><th>Published</th></tr></thead><tbody>${data.map(g => `<tr><td><strong>${esc(g.student_name)}</strong></td><td>${esc(g.student_id)}</td><td>${esc(g.module_name)}</td><td>${g.score}%</td><td><span class="pill ${g.score>=70?'green':g.score>=50?'orange':'red'}">${esc(g.letter_grade)}</span></td><td>${g.published_at?new Date(g.published_at).toLocaleDateString():'—'}</td></tr>`).join('')}</tbody></table>`;
+  } catch (err) { publishedGradesWrap.innerHTML = '<div class="empty-state">Failed to load.</div>'; }
 }
 
-// ============================================================
-// PUBLISH GRADE
-// ============================================================
 publishBtn.addEventListener('click', async () => {
   gradeError.textContent = '';
-  const sid = gradeStudentId.value.trim();
-  const mod = gradeModule.value;
-  const score = parseFloat(gradeScore.value);
-
-  if (!sid || !mod || isNaN(score)) {
-    gradeError.textContent = 'Please fill in student ID, module and score.';
-    return;
-  }
-  if (score < 0 || score > 100) {
-    gradeError.textContent = 'Score must be between 0 and 100.';
-    return;
-  }
-
+  const sid = gradeStudentId.value.trim(), mod = gradeModule.value, score = parseFloat(gradeScore.value);
+  if (!sid || !mod || isNaN(score)) { gradeError.textContent = 'Fill in student ID, module and score.'; return; }
+  if (score < 0 || score > 100) { gradeError.textContent = 'Score must be 0-100.'; return; }
   publishBtn.disabled = true;
   publishBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Publishing…';
-
   try {
-    const { data, error } = await supabase.rpc('publish_grade', {
-      p_lecturer_id: currentLecturer.lecturer_id,
-      p_student_id: sid,
-      p_module_name: mod,
-      p_score: score,
-      p_remarks: gradeRemarks.value.trim()
-    });
+    const { data, error } = await supabase.rpc('publish_grade',{p_lecturer_id:currentLecturer.lecturer_id,p_student_id:sid,p_module_name:mod,p_score:score,p_remarks:gradeRemarks.value.trim()});
     if (error) throw error;
-
-    const result = data[0];
-    if (!result.success) {
-      gradeError.textContent = result.message;
-      return;
-    }
-
+    const r = data[0];
+    if (!r.success) { gradeError.textContent = r.message; return; }
     showToast('Grade published!', 'success');
-    gradeStudentId.value = '';
-    gradeScore.value = '';
-    gradeRemarks.value = '';
+    gradeStudentId.value = ''; gradeScore.value = ''; gradeRemarks.value = '';
     loadPublishedGrades();
-  } catch (err) {
-    console.error(err);
-    gradeError.textContent = err.message || 'Failed to publish grade.';
-  } finally {
-    publishBtn.disabled = false;
-    publishBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Publish Grade';
-  }
+  } catch (err) { gradeError.textContent = err.message || 'Failed.'; }
+  finally { publishBtn.disabled = false; publishBtn.innerHTML = '<i class="fas fa-paper-plane"></i> <span data-i18n="lec.grade.publish">Publish Grade</span>'; applyI18n(); }
 });
 
-// ============================================================
-// NAV LINKS
-// ============================================================
+async function loadLecturerAnnouncements(){
+  try {
+    const { data, error } = await supabase.rpc('get_announcements_for_audience',{p_audience:'lecturers'});
+    if (error) throw error;
+    if (!data || !data.length) { announcementsWrap.innerHTML = '<div class="empty-state">No announcements at this time.</div>'; return; }
+    announcementsWrap.innerHTML = data.map(a => {
+      const cat = a.category || 'academic';
+      return `<div class="announcement-card ${esc(a.priority)} ${esc(a.type)}">
+        <div class="announcement-head"><div class="announcement-title">${esc(a.title)}</div><div class="announcement-tags">
+          <span class="announcement-tag cat-${esc(cat)}">${esc(cat)}</span>
+          <span class="announcement-tag ${esc(a.type)}">${esc(a.type)}</span>
+          <span class="announcement-tag ${esc(a.priority)}">${esc(a.priority)}</span>
+        </div></div>
+        <div class="announcement-body">${esc(a.body)}</div>
+        ${a.closing ? `<div class="announcement-closing"><i class="fas fa-quote-left"></i> ${esc(a.closing)}</div>` : ''}
+        <div class="announcement-meta"><span><i class="fas fa-user"></i> ${esc(a.created_by)}</span><span><i class="fas fa-clock"></i> ${new Date(a.created_at).toLocaleString()}</span></div>
+      </div>`;
+    }).join('');
+  } catch (err) { console.error(err); announcementsWrap.innerHTML = ''; }
+}
+
+function logout(){ currentLecturer = null; loginName.value = ''; loginId.value = ''; switchView('login'); showToast('Logged out.', 'info'); }
 goToLogin.addEventListener('click', e => { e.preventDefault(); switchView('login'); });
 goToRegister.addEventListener('click', e => { e.preventDefault(); switchView('register'); });
 
-function logout() {
-  currentLecturer = null;
-  loginName.value = '';
-  loginId.value = '';
-  switchView('login');
-  showToast('Logged out.', 'info');
-}
-
-// ============================================================
-// INIT
-// ============================================================
-switchView('register');
+applyI18n(); tickClock(); setInterval(tickClock, 1000); switchView('register');
 </script>
 </body>
 </html>
